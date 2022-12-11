@@ -37,15 +37,15 @@ invokeFunction() {
   successln "invoke transaction '${FUNCTION_NAME}' success"
 }
 
-provideQuotation() {
-  setGlobals 1
+agencyInteraction() {
+  setGlobals 3
 
   local ORDERER=localhost:7050
   local PEER0_ORG1=localhost:7051   # SupplierA
   local PEER0_ORG3=localhost:11051  # Agency
   local NAME_CC=quotation
   local CHANNEL="quotationchannel1"
-  local TX='{"Args":["provideQuotation","quotation1","500"]}'
+  local TX='{"Args":["acceptQuotation","quotation1","accepted"]}'
 	set -x
   peer chaincode invoke -o $ORDERER --tls true --cafile $ORDERER_CA -C $CHANNEL -n $NAME_CC --peerAddresses $PEER0_ORG1 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses $PEER0_ORG3 --tlsRootCertFiles $PEER0_ORG3_CA -c $TX
   res=$?
@@ -57,8 +57,8 @@ provideQuotation() {
 
 
 
-#invokeFunction 1 1 provideQuotation "quotation1" "50"
-invokeFunction 3 1 getQuotation "quotation1"
+#agencyInteraction
+invokeFunction 1 1 getQuotation "quotation1"
 
 
 

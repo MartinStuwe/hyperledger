@@ -16,8 +16,7 @@ invokeFunction() {
   
   local ORDERER=localhost:7050
   local PEER0_ORG3=localhost:11051  # Agency
-  #local NAME_CC=quotation
-  local NAME_CC=assetTransfer
+  local NAME_CC=quotation
   local CHANNEL="quotationchannel"${CHANNEL}
   #local TX='{"Args":["'${FUNCTION_NAME}'","quotation1","50"]}'
   local TX='{"Args":["'${FUNCTION_NAME}'",'${PARAMS}']}'
@@ -45,7 +44,6 @@ agencyInteraction() {
   local PEER0_ORG1=localhost:7051   # SupplierA
   local PEER0_ORG3=localhost:11051  # Agency
   local NAME_CC=quotation
-  local NAME_CC=assetTransfer
   local CHANNEL="quotationchannel1"
   local TX='{"Args":["acceptQuotation","quotation1","accepted"]}'
 	set -x
@@ -61,5 +59,5 @@ agencyInteraction() {
 
 #agencyInteraction
 #invokeFunction 1 1 getAllAssets
-invokeFunction 1 1 getAllAssets
+invokeFunction 1 1 getQuotation "quotation1"
 exit 0

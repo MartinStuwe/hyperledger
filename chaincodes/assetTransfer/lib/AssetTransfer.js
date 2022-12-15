@@ -22,7 +22,7 @@ class AssetTransfer extends Contract {
         };
         
         const CV = {
-                ID: 'asset1',
+                //ID: 'asset1',
                 FirstName: 'blue',
                 LastName: 5,
                 Jobtitle: 'jobtitle',

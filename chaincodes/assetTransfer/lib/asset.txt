@@ -1,0 +1,27 @@
+const CV {
+ID:
+FirstName: First Name
+LastName: LastName
+Jobtitle: JobtitleVal
+PreviousJobList: PreviousJobs
+EducationList: Education
+
+}
+
+
+List PreviousJobs [job1, job2, ..]
+
+const Job {
+	StartDate
+	EndDate
+	Title
+}
+
+List Education[education1, education2, ...]
+
+const educations{
+	StartYear
+	EndYear
+	Title
+	Grade
+}

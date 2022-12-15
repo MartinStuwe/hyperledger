@@ -5,9 +5,8 @@ const { Contract } = require('fabric-contract-api')
 class AssetTransfer extends Contract {
 
     async initLedger(ctx) {
-        
+
         const Job = {
-            ID: "1",
             Title: "jobtitle",
             StartDate: "01.01.2010",
             EndDate: "01.01.2011"
@@ -17,32 +16,31 @@ class AssetTransfer extends Contract {
         const Education = {
             Title: "University of CSVs",
             StartDate: "01.01.2005",
-           EndYear: "31.12.2009",
+            EndDate: "31.12.2009",
             Grade: 3.0,
         };
-        
+
         const CV = {
-                FirstName: 'blue',
-                LastName: 5,
-                Jobtitle: 'jobtitle',
-                PreviousJobs: [Job],
-                Education: [Education],
-            };
-            
+            FirstName: 'Mark',
+            LastName: 'Red',
+            PreviousJobs: [Job],
+            Education: [Education],
+        };
+
         const Application = {
             ID: 'applicant1',
             status: 'received Application',
+            Jobtitle: 'Designer',
             CV: CV
-
         };
 
-            // example of how to write to world state deterministically
-            await ctx.stub.putState(Application.ID, Buffer.from(JSON.stringify(Application)));
-        }
-    
+        // example of how to write to world state deterministically
+        await ctx.stub.putState(Application.ID, Buffer.from(JSON.stringify(Application)));
+    }
+
 
     // CreateAsset issues a new asset to the world state with given details.
-    async createAsset(ctx, id, firstname, lastname, appliedjob, jobtitle, jobstart, jobend, educationtitle, educationstart, educationend, grade, applicationStatus) {
+    async createAsset(ctx, id, firstname, lastname, appliedjob, jobtitle, jobstart, jobend, educationtitle, educationstart, educationend, grade) {
         const exists = await this.assetExists(ctx, id);
         if (exists) {
             throw new Error(`The asset ${id} already exists`);
@@ -58,31 +56,31 @@ class AssetTransfer extends Contract {
         const Education = {
             Title: educationtitle,
             StartDate: educationstart,
-            EndYear: educationend,
+            EndDate: educationend,
             Grade: grade,
         };
-        
+
         const CV = {
-                FirstName: firstname,
-                LastName: lastname,
-                PreviousJobs: [Job],
-                Education: [Education],
-                
-                
-            };
-        
+            FirstName: firstname,
+            LastName: lastname,
+            PreviousJobs: [Job],
+            Education: [Education],
+
+
+        };
+
         const Application = {
             ID: id,
             status: 'received Application',
             Jobtitle: appliedjob,
             CV: CV
         };
-        
-        const assetBuffer = Buffer.from(JSON.stringify(CV));
+
+        const assetBuffer = Buffer.from(JSON.stringify(Application));
         ctx.stub.setEvent('CreateAsset', assetBuffer);
 
         await ctx.stub.putState(id, assetBuffer);
-        return JSON.stringify(CV);
+        return JSON.stringify(Application);
     }
 
 
@@ -94,9 +92,9 @@ class AssetTransfer extends Contract {
             throw new Error(`The asset ${id} does not exist`);
         }
         const rawAsset = await ctx.stub.getState(id);
-        const CV = JSON.parse(rawAsset.toString());
-        Application.Jobtitle = appliedjob;
-        const assetBuffer = Buffer.from(JSON.stringify(CV));
+        const Application = JSON.parse(rawAsset.toString());
+        Application.CV.Jobtitle = appliedjob;
+        const assetBuffer = Buffer.from(JSON.stringify(Application));
         ctx.stub.setEvent('UpdateAsset', assetBuffer);
         return ctx.stub.putState(id, assetBuffer);
     }
@@ -107,7 +105,7 @@ class AssetTransfer extends Contract {
         if (!exists) {
             throw new Error(`The asset ${id} does not exist`);
         }
-	    const asset = await ctx.stub.getState(id);
+        const asset = await ctx.stub.getState(id);
         const assetBuffer = Buffer.from(JSON.stringify(asset));
         ctx.stub.setEvent('DeleteAsset', assetBuffer);
         return ctx.stub.deleteState(id);
@@ -122,35 +120,35 @@ class AssetTransfer extends Contract {
     // TransferAsset updates the owner field of asset with given id in the world state.
     async transferAsset(ctx, id, newOwner) {
         const rawAsset = await ctx.stub.getState(id);
-	    const asset = JSON.parse(rawAsset.toString());
+        const asset = JSON.parse(rawAsset.toString());
         const oldOwner = asset.status;
         asset.Owner = newOwner;
 
         //Missing Asset Transfer
         const assetBuffer = Buffer.from(JSON.stringify(asset));
 
-	    ctx.stub.setEvent('TransferAsset', assetBuffer);
+        ctx.stub.setEvent('TransferAsset', assetBuffer);
         ctx.stub.putState(id, assetBuffer);
         return oldOwner;
     }
-    
+
     //Not tested
-     // TransferAsset updates the owner field of asset with given id in the world state.
-     async acceptreject(ctx, id, accept) {
+    // TransferAsset updates the owner field of asset with given id in the world state.
+    async acceptreject(ctx, id, accept) {
         const rawAsset = await ctx.stub.getState(id);
-	    const asset = JSON.parse(rawAsset.toString());
-        asset.status = "accept"
-        if(accept==0){
-        asset.status = "reject";
+        const asset = JSON.parse(rawAsset.toString());
+        asset.status = "accept";
+        if (accept == 0) {
+            asset.status = "reject";
         }
         //Missing Asset Transfer
         const assetBuffer = Buffer.from(JSON.stringify(asset));
 
-	    ctx.stub.setEvent('Accept/Reject', assetBuffer);
+        ctx.stub.setEvent('Accept/Reject', assetBuffer);
         ctx.stub.putState(id, assetBuffer);
-        return oldOwner;
+        //return oldOwner;
     }
-    
+
     // WORKS
     // GetAllAssets returns all assets found in the world states
     async getAllAssets(ctx) {

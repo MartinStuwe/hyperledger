@@ -61,5 +61,10 @@ agencyInteraction() {
 
 #agencyInteraction
 #invokeFunction 1 1 getAllAssets
+#invokeFunction 1 1 getAllAssets
+#invokeFunction 1 1 acceptreject "applicant1" 1
+#invokeFunction 1 1 getAllAssets
+#invokeFunction 1 1 createAsset "applicant4" "John" "Dean" "Designer" "Graphic" "01.01.2011" "01.01.2012" "Degree" "01.01.2005" "01.01.2010" "110"
 invokeFunction 1 1 getAllAssets
+
 exit 0

@@ -134,13 +134,15 @@ class AssetTransfer extends Contract {
         return oldOwner;
     }
     
-    //NEW LOGIC
+    //Not tested
      // TransferAsset updates the owner field of asset with given id in the world state.
-     async accepted(ctx, id) {
+     async acceptreject(ctx, id, accept) {
         const rawAsset = await ctx.stub.getState(id);
 	    const asset = JSON.parse(rawAsset.toString());
-        asset.status = "accepted";
-
+        asset.status = "accept"
+        if(accept==0){
+        asset.status = "reject";
+        }
         //Missing Asset Transfer
         const assetBuffer = Buffer.from(JSON.stringify(asset));
 
@@ -149,8 +151,8 @@ class AssetTransfer extends Contract {
         return oldOwner;
     }
     
-    
-    // GetAllAssets returns all assets found in the world state.
+    // WORKS
+    // GetAllAssets returns all assets found in the world states
     async getAllAssets(ctx) {
         const allResults = [];
         const iterator = await ctx.stub.getStateByRange('', '');

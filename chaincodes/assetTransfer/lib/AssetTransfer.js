@@ -22,7 +22,6 @@ class AssetTransfer extends Contract {
         };
         
         const CV = {
-                //ID: 'asset1',
                 FirstName: 'blue',
                 LastName: 5,
                 Jobtitle: 'jobtitle',
@@ -35,10 +34,10 @@ class AssetTransfer extends Contract {
             status: 'received Application',
             CV: CV
 
-        }
+        };
 
             // example of how to write to world state deterministically
-            await ctx.stub.putState(CV.ID, Buffer.from(JSON.stringify(CV)));
+            await ctx.stub.putState(Application.ID, Buffer.from(JSON.stringify(Application)));
         }
     
 
@@ -77,7 +76,7 @@ class AssetTransfer extends Contract {
             status: 'received Application',
             Jobtitle: appliedjob,
             CV: CV
-        }
+        };
         
         const assetBuffer = Buffer.from(JSON.stringify(CV));
         ctx.stub.setEvent('CreateAsset', assetBuffer);

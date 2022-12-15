@@ -146,7 +146,7 @@ class AssetTransfer extends Contract {
         //Missing Asset Transfer
         const assetBuffer = Buffer.from(JSON.stringify(asset));
 
-	    ctx.stub.setEvent('TransferAsset', assetBuffer);
+	    ctx.stub.setEvent('Accept/Reject', assetBuffer);
         ctx.stub.putState(id, assetBuffer);
         return oldOwner;
     }

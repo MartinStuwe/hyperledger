@@ -25,3 +25,10 @@ const educations{
 	Title
 	Grade
 }
+
+
+sudo ./networkdown.sh
+sudo ./network.sh up createChannels
+sudo ./network.sh deployCCs
+sudo ./network.sh deployCCs -n assetTransfer
+sudo ./network.sh invokeCC
